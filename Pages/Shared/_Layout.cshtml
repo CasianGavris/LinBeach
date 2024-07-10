@@ -1,0 +1,103 @@
+﻿@using LinBeach.Data
+@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<ApplicationUser> signInManager;
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - LinBeach</title>
+    <link rel="stylesheet" href="~/LinBeach.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <link href='https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css' rel='stylesheet' type='text/css' />
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js'></script>
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCPy07daxPCEAbQtq_3GtkGIrib1_UCjmY&callback=console.debug&libraries=maps,marker&v=beta">
+    </script>
+
+
+</head>
+<body style="background-color: #320c47;">
+   
+    <header>
+        
+        <nav class="navbar fixed-top bg-body-tertiary navbar-expand-lg bg-transparent navbar-dark">
+            
+            <div class="container-fluid" >
+                <a class="navbar-brand nav-link" href="/Index">
+                    <img style="height: 60px" src="~/lib/images/logoalb.png" >
+                    Lin Beach
+                </a>
+                
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div style ="padding-right:50px" class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Features</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Pricing</a>
+                        </li>
+                       
+                        @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Admin Panel
+                                </a>
+                                <ul style="background-color: #320c47" class="dropdown-menu dropdown-menu-dark">
+                                    <li><a class="dropdown-item text-light" href="/Admin/Events/Add">Add Event</a></li>
+                                    <li><a class="dropdown-item text-light" href="/Admin/Events/List">Events List</a></li>
+                                    <li><a class="dropdown-item text-light" href="/Admin/Users/Index">Users</a></li>
+                                    
+                                </ul>
+                            </li>
+                        }
+                    </ul>
+                    <div class="d-flex justify-content-center align-items-center">
+                        @if(signInManager.IsSignedIn(User))
+                        {
+                            <div class="text-light me-3">
+                                @User?.Identity?.Name
+                            </div>
+                            <a class="btn btn-outline-light" href="/Logout">Logout</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-outline-light me-3" href="/Login">Login</a>
+                            <a class="btn btn-outline-light" href="/Register">Register</a>
+                        }
+                        
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div >
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+           Here is the footer 
+        </div>
+    </footer>
+   
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+    
+</body>
+</html>

@@ -1,0 +1,114 @@
+﻿@page "{Id}"
+@model LinBeach.Pages.Admin.Events.EditModel
+@{
+}
+
+
+<div class="firstp container-fluid mb-3">
+    <h2 class="text-center text-light">Edit Event</h2>
+</div>
+
+<partial name="_Alert" />
+
+@if(Model.eventPost != null)
+{
+    <div>
+        <div class="container container1">
+            <form method="post">
+                <div class="mb-3">
+                    <label for="Id" class="form-label text-light">Id</label>
+                    <input type="text" class="form-control" id="Id" asp-for="eventPost.Id" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="Title" class="form-label text-light">Title</label>
+                    <input type="text" class="form-control" id="Title" asp-for="eventPost.Title">
+                </div>
+                <div class="mb-3">
+                    <label for="content" class="form-label text-light">Content</label>
+                    <textarea class="form-control" id="content" asp-for="eventPost.Content"></textarea>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="imageUpload" class="form-label text-light">Uploade image</label>
+                    <input type="file" id="imageUpload" asp-for="Image">
+                    @if(Model.eventPost.ImageUrl != null)
+                    {
+                        <img src="@Model.eventPost.ImageUrl" id="imagepreview" style="width:300px;" />
+                    }
+                    else
+                    {
+                        <img src="" id="imagepreview" style="display:none; width:500px;" />
+                    }
+
+                </div>
+                <div class="mb-3">
+                    <label for="Image" class="form-label text-light">Image</label>
+                    <input type="text" class="form-control" id="Image" asp-for="eventPost.ImageUrl">
+                </div>
+                <div class="mb-3">
+                    <label for="UrlHandle" class="form-label text-light">Url Handle</label>
+                    <input type="text" class="form-control" id="UrlHandle" asp-for="eventPost.UrlHandle">
+                </div>
+                <div class="mb-3">
+                    <label for="PostDate" class="form-label text-light">Post Date</label>
+                    <input type="datetime-local" class="form-control" id="PostDate" asp-for="eventPost.EventDate">
+                </div>
+                
+
+                <div class="mb-3 d-flex justify-content-between">
+                    <button type="submit" class="btn btn-outline-light" asp-page-handler="Edit">Submit</button>
+                    @if (Model.eventPost.Id.ToString() != "ab1d3fbb-737d-4430-131a-08dc5fb85ab1")
+                    {
+                        <button type="submit" class="btn btn-outline-danger" asp-page-handler="Delete">Delete</button>
+                    }
+                </div>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container">
+        <p>Event Not Found</p>
+    </div>
+}
+@section Scripts {
+    <script>
+        var editor = new FroalaEditor('#content', {
+            imageUploadURL: '/api/images',
+            pasteDeniedAttrs: ['color', 'background-color'],
+            
+            pastePlain: true
+            
+        });
+
+
+        const featuredImageUploadElement = document.getElementById('imageUpload');
+        const imageUrl = document.getElementById('Image');
+        const imagePreview = document.getElementById('imagepreview');
+
+
+        async function uploadFeaturedImage(e) {
+            console.log(e.target.files[0]);
+
+            let data = new FormData();
+            data.append('file', e.target.files[0]);
+
+            await fetch('/api/images', {
+                method: 'POST',
+                headers: {
+                    'Accept': '*/*',
+                },
+                body: data
+            }).then(response => response.json())
+                .then(result => {
+                    imageUrl.value = result.link;
+                    imagePreview.style.display = 'block';
+                    imagePreview.src = result.link;
+                });
+        }
+
+        featuredImageUploadElement.addEventListener('change', uploadFeaturedImage);
+
+    </script>
+}

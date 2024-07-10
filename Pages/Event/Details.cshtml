@@ -1,0 +1,99 @@
+﻿@page "/Event/{urlHandle}"
+@model LinBeach.Pages.Event.DetailsModel
+@{
+    ViewData["Title"] = Model.EventPost?.Title;
+}
+
+<img class="bg-image" src="~/lib/images/background.png">
+
+<div class="card-scroll-container vh-100 d-flex" style="padding-top:100px;">
+    
+        @if (Model.EventPost != null)
+        {
+            
+                
+
+                <div class="card">
+                    <div class="card-front">
+                        What?
+                    </div>
+                    <div class="card-back pt-6">
+                        @Html.Raw(Model.EventPost.Content)
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-front">
+                        When?
+                    </div>
+                    <div class="card-back" id="date" style="font-size:40px ">
+                         @Model.EventPost.EventDate
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-front">
+                        Where?
+                    </div>
+                    <div class="card-back">
+                        <iframe src="https://storage.googleapis.com/maps-solutions-uxz0e0td0p/locator-plus/v0c1/locator-plus.html"
+                                width="100%" height="350px" style="border:0;" loading="lazy"></iframe>
+                    </div>
+                </div>
+            
+        }
+        else
+        {
+            <div class="event-not-found">
+                <h2 class="text-center">Event not found</h2>
+            </div>
+        }
+    
+</div>
+
+<script async src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=maps,marker&v=beta"></script>
+
+<script>
+    // Function to format date on page load
+    function formatDate() {
+        var dateElement = document.getElementById('date');
+        if (dateElement && dateElement.textContent) {
+            var input = dateElement.textContent.trim();
+            var dateParts = input.split('/');
+            if (dateParts.length === 3) {
+                var europeanDate = `${dateParts[1]}/${dateParts[0]}/${dateParts[2]}`;
+                dateElement.textContent = europeanDate;
+            } else {
+                console.error('Date format unexpected:', input);
+            }
+        }
+    }
+
+    // Function to toggle flip and manage pointer events
+    function toggleFlipAndPointerEvents(event) {
+        const card = this;
+        const iframe = card.querySelector('iframe'); // Find the iframe within the card
+
+        // Prevent the click event if it's from touchstart to avoid double firing
+        if (event.type === 'touchstart') {
+            event.preventDefault();
+        }
+
+        // Toggle the 'is-flipped' class and pointer events based on the card's state
+        card.classList.toggle('is-flipped');
+        if (iframe) {
+            iframe.style.pointerEvents = card.classList.contains('is-flipped') ? 'auto' : 'none';
+        }
+    }
+
+    // Apply event listeners to all cards for both click and touch
+    document.addEventListener('DOMContentLoaded', function () {
+        window.addEventListener('load', formatDate);
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.addEventListener('click', toggleFlipAndPointerEvents);
+            card.addEventListener('touchstart', toggleFlipAndPointerEvents);
+        });
+    });
+</script>
+

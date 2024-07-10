@@ -1,0 +1,43 @@
+﻿@page
+@model LinBeach.Pages.Admin.Events.ListModel
+@{
+}
+
+<div class="firstp container-fluid mb-3">
+    <h2 class="text-center text-light">Events List</h2>
+</div>
+
+<partial name="_Alert" />
+
+@if(Model.EventPosts != null && Model.EventPosts.Any())
+{
+    <div class="container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <td class="text-light">ID</td>
+                    <td class="text-light">Title</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var eventPost in Model.EventPosts)
+                {
+                    <tr>
+                        <td class="text-light">@eventPost.Id</td>
+                        <td class="text-light">@eventPost.Title</td>
+                        <td><a class="btn btn-outline-light" href="/Admin/Events/Edit/@eventPost.Id">View</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="container">
+        <h3 class="text-light">No events were found</h3>
+    </div>
+}
+
+

@@ -1,0 +1,321 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+  overflow-x:hidden;
+}
+
+.bg-image {
+    
+    position: absolute;
+    object-fit: cover;
+    filter: brightness(0.5);
+    z-index: -1;
+    width: 100vw;
+    height: 100vh;
+   
+}
+.bg-image-v {
+    position: absolute;
+    object-fit: cover;
+    filter: brightness(0.8);
+    z-index: -1;
+    width: 100vw;
+    height: 100vh;
+}
+.navbar {
+    transition: 0.5s;
+    
+}
+
+.nb-scroll {
+    background-color: #320c47;
+    box-shadow: 0 3px 10px rgba(50,12,71, 0.2);
+}
+
+.firstp {
+    padding-top: 120px;
+}
+
+.carousel-item {
+    position: relative;
+    text-align: center;
+}
+
+    .carousel-item img {
+        max-height: 400px; /* Maintain max height */
+        width: 100%; /* Ensure full width */
+        vertical-align: middle; /* Align image vertically in the middle */
+        display: block; /* Block display to fit entire width */
+        opacity: 0.9;
+    }
+
+.carousel-caption {
+    position: relative; /* Change to relative to keep it under the image */
+    top: 0; /* Reset top position */
+    transform: none; /* Disable transform that moves it up */
+}
+.carousel-link {
+    display: block;
+    color: inherit; /* Maintain the text color on hover */
+    text-decoration: none; /* No underline */
+}
+
+.carousel-link:hover {
+    opacity: 0.5; /* Reduce opacity to 50% on hover */
+    transition: opacity 0.3s ease; /* Smooth transition for the hover effect */
+}
+
+.mt-2 {
+    margin-top: 1rem; /* Add some margin at the top for spacing */
+}
+
+.px-3 {
+    padding-left: 1rem; /* Padding for alignment */
+    padding-right: 1rem;
+}
+h1.display-5 {
+    font-family: 'Pacifico', cursive; 
+}
+.container1 {
+    max-width: 600px; /* Adjust as per your design */
+    background: rgba(50, 12, 71, 0.5); /* Semi-transparent white */
+    padding: 20px;
+    
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative; /* Adjust positioning */
+    top: 50%; /* Center vertically */
+    
+}
+
+.form-control {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+
+/* Add focus effect for inputs */
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Add media queries for responsiveness */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+}
+
+.shake {
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+@keyframes shake {
+    10%, 90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%, 80% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%, 50%, 70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%, 60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}
+
+@keyframes meltAway {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+}
+
+.melt-away {
+    animation: meltAway 1s ease-in-out forwards;
+}
+.event-details-bg-image {
+    background-image: url('~/lib/images/background.png') ;
+    background:no-repeat center center fixed;
+    background-size: cover;
+}
+
+.event-card {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    padding: 2rem;
+    margin-top: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.event-title {
+    color: #333;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.event-content {
+    color: #555;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.event-not-found {
+    color: #ff6b6b;
+    padding: 2rem;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.card-container {
+  perspective: 1000px; /* Gives a 3D space perspective */
+}
+
+.card {
+    background-color: rgba(50, 12, 71, 0.5);
+    min-width:300px;/* Fixed width */
+    height: 350px; /* Minimum height */
+    transform-style: preserve-3d;
+    flex: 0 1 calc(33.33% - 20px); /* Takes up one-third of the space minus the gap */
+    margin: 10px; /* Ensures there is space around each card */
+    transition: transform 0.6s;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index:1000;
+}
+
+.card:hover, .card.is-flipped {
+  transform: rotateY(180deg); /* Rotate the card on hover or when class is added */
+}
+
+.card-front, .card-back {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  backface-visibility: hidden; /* Makes the back face invisible when rotated */
+}
+
+.card-front {
+    background-color: rgba(50, 12, 71, 0.5);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 80px;
+    font-family: 'Pacifico', cursive;
+}
+
+.card-back {
+    background-color: rgba(50, 12, 71, 0.5);
+    color: white;
+    transform: rotateY(180deg); /* Rotates the back face to be a mirror of the front */
+    display: flex; /* Establishes a flex context */
+    flex-direction: column; /* Stacks children vertically */
+    align-items: center; /* Centers children horizontally in the flex container */
+    justify-content: center; /* Centers children vertically in the flex container */
+    font-size: 18px;
+    position: absolute; /* Ensures it covers the entire area of the card */
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    
+    padding-left: 30px; 
+    padding-right: 30px;
+    overflow-y: auto;
+}
+    .card-back iframe {
+        pointer-events: none; /* Disables click events on the iframe */
+    }
+
+
+
+.card-scroll-container {
+    display: flex;
+    
+    overflow-x: hidden;
+    flex-wrap: wrap;
+    justify-content: center; /* Centers cards in the container */
+    align-items: flex-start; /* Aligns items at the start of the container */
+    gap: 20px; /* Adds space between the cards */
+}
+.bg-transparent{
+    background-color: transparent;
+}
+
+
+@media (max-width: 1024px) {
+
+    .card-scroll-container {
+        
+        
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS devices */
+    }
+
+    .card {
+        flex: 0 1 calc(50% - 20px); /* Takes up half the space on smaller tablets */
+    }
+    .pt-6 {
+        padding-top: 100px;
+    }
+}
+@media (max-width: 768px) {
+    .card {
+        flex: 0 1 calc(50% - 20px); /* Takes up half the space on smaller tablets */
+    }
+    .pt-6 {
+        padding-top: 100px;
+    }
+    
+}
+
+@media (max-width: 480px) {
+    .card {
+        flex: 0 1 90%; /* Full width on small screens */
+    }
+    .bg-transparent {
+        background-color: #320c47;
+    }
+    .navbar {
+        background-color: #320c47;
+        box-shadow: 0 3px 10px rgba(50,12,71, 0.2);
+    }
+    .pt-6{
+        padding-top:100px;
+    }
+    
+}
+

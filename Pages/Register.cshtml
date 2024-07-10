@@ -1,0 +1,168 @@
+﻿@page
+@model LinBeach.Pages.RegisterModel
+@{
+}
+
+<img class="bg-image-v" src="~/lib/images/background1.png">
+<div class="container">
+    <div class="row align-items-center" style="min-height: 100vh;">
+        <!-- This will create a full-screen height row that aligns items vertically -->
+        <!-- Column for the background image -->
+        <div class="col-md-6 d-none d-md-block">
+            <!-- 'd-none' hides on xs to sm, 'd-md-block' displays on md and larger -->
+            <img src="~/lib/images/backgroundIcon.png">
+        </div>
+
+        <!-- Column for the login form -->
+        <div class="col-md-6">
+            <!-- This will take up half the width on md screens and larger, and full width on smaller screens -->
+            <div class="container1" id="registerFormContainer">
+                <!-- You might need to adjust this container if it has styles that conflict with the layout -->
+                
+                <h2 class="py-3 text-light">Registration Form</h2>
+                <form method="post" id="registerForm">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="mb-3">
+                        <label for="fullName" class="form-label text-light">Full Name</label>
+                        <input type="text" class="form-control" id="fullName" asp-for="Register.FullName" required>
+                        <span asp-validation-for="Register.FullName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="username" class="form-label text-light">Username</label>
+                        <input type="text" class="form-control " id="username" asp-for="Register.Username" required>
+                        <span asp-validation-for="Register.Username" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label text-light">Email Address</label>
+                        <input type="email" class="form-control" id="email" asp-for="Register.Email" required>
+                        <span asp-validation-for="Register.Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="phone" class="form-label text-light">Phone Number</label>
+                        <input type="tel" class="form-control" id="phone" asp-for="Register.Phone" required>
+                        <span asp-validation-for="Register.Phone" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="birthDate" class="form-label text-light">Birth Date</label>
+                        <input type="date" class="form-control" id="birthDate" asp-for="Register.Birthdate" required>
+                        <span asp-validation-for="Register.Birthdate" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label text-light">Password</label>
+                        <input type="password" class="form-control" id="password" asp-for="Register.Password" placeholder="Password must have at least one uppercase, one lowercase, one special character and one number" required minlength="6">
+                        <span asp-validation-for="Register.Password" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="registerButton">Register</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script>
+       $(function () {
+            // Function to update the register button's state
+            function updateRegisterButtonState() {
+                $('#registerButton').prop('disabled', !(isValidUsername && isValidEmail && isValidPhone));
+            }
+
+            // Validate the fields initially on page load
+            function validateInitialFields() {
+                var username = $('#username').val();
+                var email = $('#email').val();
+                var phone = $('#phone').val();
+
+                // Assume validity until checked
+                isValidUsername = username.length > 0;
+                isValidEmail = email.length > 0 ;
+                isValidPhone = phone.length > 0 && phone.match(/^\d{10}$/);
+
+                // Optionally, you could re-check with server here or initially set them to true if you prefer
+
+                updateRegisterButtonState();
+            }
+
+            // Check username existence
+            $('#username').on('change', function () {
+                var username = $(this).val();
+                if (username) {
+                    $.ajax({
+                        url: '@Url.Page("/Register", "CheckUsername")',
+                        method: 'GET',
+                        data: { username: username },
+                        success: function (response) {
+                            isValidUsername = !response.exists;
+                            updateRegisterButtonState();
+                            if (response.exists) {
+                                alert('This username is already taken.');
+                            }
+                        }
+                    });
+                }
+            });
+
+            // Check email existence
+            $('#email').on('change', function () {
+                var email = $(this).val();
+                if (email) {
+                    $.ajax({
+                        url: '@Url.Page("/Register", "CheckEmail")',
+                        method: 'GET',
+                        data: { email: email },
+                        success: function (response) {
+                            isValidEmail = !response.exists;
+                            updateRegisterButtonState();
+                            if (response.exists) {
+                                alert('This email is already in use.');
+                            }
+                        }
+                    });
+                }
+            });
+
+            // Check phone number existence
+            $('#phone').on('change', function () {
+                var phone = $(this).val();
+                if (phone) {
+                    $.ajax({
+                        url: '@Url.Page("/Register", "CheckPhone")',
+                        method: 'GET',
+                        data: { phone: phone },
+                        success: function (response) {
+                            isValidPhone = !response.exists;
+                            updateRegisterButtonState();
+                            if (response.exists) {
+                                alert('This phone number is already registered.');
+                            }
+                        }
+                    });
+                }
+            });
+
+            // Re-validate fields on page load in case of return from failed submission
+            validateInitialFields();
+        });
+        document.addEventListener("DOMContentLoaded", function () {
+            var loginForm = document.getElementById('registerForm');
+
+            loginForm.addEventListener('submit', function (e) {
+
+                setTimeout(function () {
+                    // Add the animation class to the form container
+                    var formContainer = document.getElementById('registerFormContainer');
+                    formContainer.classList.add('melt-away');
+                }, 100);
+            });
+        });
+    </script>
+}

@@ -1,0 +1,85 @@
+﻿@page
+@model LinBeach.Pages.Admin.Events.AddModel
+@{
+}
+<div style="background-color: #320c47;">
+
+<div class="firstp container-fluid mb-3">
+    <h2 class="text-center text-light">Create Event</h2>
+</div>
+<div>
+    <div class="container">
+        <form method="post">
+            <div class="mb-3">
+                <label for="Title" class="form-label text-light">Title</label>
+                <input type="text" class="form-control" id="Title" asp-for="AddEventRequest.Title">
+            </div>
+            <div class="mb-3">
+                <label for="Content" class="form-label text-light">Content</label>
+                <textarea class="form-control" id="content" asp-for="AddEventRequest.Content"></textarea>
+            </div>
+            
+            <div class="mb-3">
+                <label for="imageUpload" class="form-label text-light">Uploade image</label>
+                <input type="file" id="imageUpload" asp-for="Image">
+                <img src ="" id="imagepreview" style="display:none; width:500px;"
+            </div>
+            <div class="mb-3">
+                <label for="Image" class="form-label text-light">Image</label>
+                <input type="text" class="form-control" id="Image" asp-for="AddEventRequest.ImageUrl">
+            </div>
+            <div class="mb-3">
+                <label for="UrlHandle" class="form-label text-light">Url Handle</label>
+                <input type="text" class="form-control" id="UrlHandle" asp-for="AddEventRequest.UrlHandle">
+            </div>
+            <div class="mb-3">
+                <label for="PostDate" class="form-label text-light">Post Date</label>
+                <input type="datetime-local" class="form-control" id="PostDate" asp-for="AddEventRequest.EventDate">
+            </div>
+            
+            <button type="submit" class="btn btn-outline-light mb-3">Submit</button>
+        </form>
+    </div>
+</div>
+</div>
+@section Scripts {
+    <script>
+        var editor = new FroalaEditor('#content', {
+            imageUploadURL: '/api/images',
+            pasteDeniedAttrs: ['class', 'id', 'style', 'color', 'background-color'],
+            pasteAllowedStyleProps: ['font-family', 'font-size'],
+            pastePlain: true
+            
+        });
+        
+
+
+        const featuredImageUploadElement = document.getElementById('imageUpload');
+        const imageUrl = document.getElementById('Image');
+        const imagePreview = document.getElementById('imagepreview');
+
+        
+        async function uploadFeaturedImage(e) {
+            console.log(e.target.files[0]);
+
+            let data = new FormData();
+            data.append('file', e.target.files[0]);
+
+            await fetch('/api/images', {
+                method: 'POST',
+                headers: {
+                    'Accept': '*/*',
+                },
+                body: data
+            }).then(response => response.json())
+                .then(result => {
+                    imageUrl.value = result.link;
+                    imagePreview.style.display = 'block';
+                    imagePreview.src = result.link;
+                });
+        }
+
+        featuredImageUploadElement.addEventListener('change', uploadFeaturedImage);
+
+    </script>
+}

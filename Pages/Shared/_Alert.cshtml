@@ -1,0 +1,29 @@
+﻿@using LinBeach.Models.ViewModels;
+
+@{
+    var alert = (Alerts)ViewData["Alert"];
+    if(alert != null)
+    {
+        var alertClass = "";
+        switch (alert.Type)
+        {
+            case Enums.AlertType.Succes:
+                alertClass = "alert-success";
+                break;
+            case Enums.AlertType.Info:
+                alertClass = "alert-light";
+                break;
+            case Enums.AlertType.Error:
+                alertClass = "alert-danger";
+                break;
+            default:
+                alertClass = "";
+                break;
+        }
+
+        <div class="container alert @alertClass alert-dismissible fade show mb-3" role="alert">
+            @Html.Raw(alert.Message)
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+        </div>
+    }
+}
